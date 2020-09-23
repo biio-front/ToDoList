@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="css/todolist.css">
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="clock-box clock_24hours">
+                <p class="today"></p>
+                <p id="clock">00:00</p>
+                <input type="button" value="24h" onclick="changeClock()">
+            </div>
+        </header>
+        <section>
+            <article>
+                <div class="name-box">
+                    <form class="show">
+                        <input type="text" class="nameBox" placeholder="What is your name?">
+                    </form>
+                    <input type="button" value="Submit" class="name_submit_btn show">
+                </div>
+                <input type="button" value="change the name" class="name_change_btn hide">
+                <h1 class="todolist_title">TODO List</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Check</th>
+                            <th>TODO List</th>
+                        </tr>
+                    </thead>
+                    <tbody id="toDoList">
+                    </tbody>
+                </table>
+                <div class="todo_write ">
+                    <form class="input_todo">
+                        <input type="text" placeholder="Add todo list">
+                    </form>
+                    <input type="button" value="Add">
+                </div>
+                <div class="btn-box">
+                    <input type="button" value="Delete selected" class="DelSel">
+                    <input type="button" value="Delete All" class="DelAll">
+                </div>
+            </article>
+        </section>
+    </div>
+
+    <script src="js/todolist.js"></script>
+    <script src="js/clock.js"></script>
+    <script src="js/name.js"></script>
+    <script src="js/deletBtn.js"></script>
+</body>
+</html>
