@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form class="name_form">
+        <input type="text" class="nameBox" placeholder="What is your name?">
+    </form>
+    <div class="greeting"></div>
+    <form class="input_todo">
+        <input type="text" placeholder="Add todo list">
+    </form>
+    <div class="list">
+        <ul></ul>
+    </div>
+<!-- js -->
+    <script>
+        const form = document.querySelector('.name_form');
+        const nameInput = form.querySelector('input');
+        const greeting = document.querySelector('.greeting');
+
+        const todoForm = document.querySelector('.input_todo');
+        const todoInput = todoForm.querySelector('input');
+
+        const user = [];
+        const toDoList = [];
+        
+        function greetingUser(text){
+            greeting.innerHTML = `Hello ${text}`;
+        }
+
+        function submitUserName(event){
+            event.preventDefault();
+            
+            const currentValue = nameInput.value;
+            const newId = user.length + 1;
+            
+            const NAME = {
+                userNum: newId,
+                userName: currentValue,
+                toDoList
+            }
+            user.push(NAME);
+
+            console.log(NAME);
+            console.log( JSON.stringify(NAME));
+            localStorage.setItem(`userName${newId}`, JSON.stringify(NAME));
+
+            greetingUser(currentValue);
+        }
+
+        function Add_list(text){
+            const ul = document.querySelector('.list ul');
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            const btn = document.createElement('span');
+            
+            const newId = toDoList.length + 1;
+            
+            span.innerText = text;
+            btn.innerHTML = '❌';
+            li.appendChild(span);
+            li.appendChild(btn);
+            li.id = newId;
+            ul.appendChild(li);
+            
+            const toDoObj = {
+                id: newId,
+                text: text
+            }
+            toDoList.push(toDoObj);
+
+            // save List
+            for(let i = 1; i <= user.length; i++){
+                const currentUserName = greeting.innerHTML; //Hello user_name
+                
+                const arr = localStorage.getItem(`userName${i}`);
+                const currentArr = JSON.parse(arr);
+                const currentUser = currentArr.userName;
+                const currentToDoList = currentArr.toDoList;
+                
+                if(currentUserName == `Hello ${currentUser}`){
+                    currentToDoList.push(toDoObj);
+                    console.log(currentArr);
+                    localStorage.setItem(`userName${i}`, JSON.stringify(currentArr));
+                    console.log('localStorage i',`userName${i}`);
+                }
+            }
+        }
+        
+        function submitList(event){
+            event.preventDefault();
+
+            const currentValue = todoInput.value;
+            Add_list(currentValue);
+            todoInput.value = '';
+        }
+
+        function loadLS(){
+            for(let i = 1; i <= 10; i++){
+                const LS_arr = localStorage.getItem(`userName${i}`);
+                if(LS_arr == null){
+                    return;
+                } else{
+                    const parsedArr = JSON.parse(LS_arr);
+                    user.push(parsedArr);
+                    console.log(user);
+                }
+            }
+        }
+
+        function init(){
+            const firstArr = localStorage.getItem('userName1');
+            
+            if(firstArr !== null){
+                const firstUser = JSON.parse(firstArr).userName;
+
+                loadLS();
+                greetingUser(firstUser);
+            }
+
+            form.addEventListener('submit', submitUserName);
+            todoForm.addEventListener('submit', submitList);
+        }
+
+        init();
+    </script>
+</body>
+</html>
